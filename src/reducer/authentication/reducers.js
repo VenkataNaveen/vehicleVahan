@@ -1,0 +1,58 @@
+//import Cookies from 'js-cookie';
+import actions from './actions'
+const { LOGIN_BEGIN, LOGIN_SUCCESS, LOGIN_ERR, LOGOUT_BEGIN, LOGOUT_SUCCESS, LOGOUT_ERR } = actions;
+
+const initState = {
+  login:false,
+  loading: false,
+  error: null,
+  userDetails:localStorage.getItem("userInfo")?JSON.parse(localStorage.getItem("userInfo")):{}
+};
+
+/**
+ *
+ * @todo impure state mutation/explaination
+ */
+const AuthReducer = (state = initState, action) => {
+  const { type, data, err } = action;
+  switch (type) {
+    case LOGIN_BEGIN:
+      return {
+        ...state,
+        loading: true,
+      };
+    case LOGIN_SUCCESS:
+      return {
+        ...state,
+        login: true,
+        userDetails:data,
+        loading: false,
+      };
+    case LOGIN_ERR:
+      return {
+        ...state,
+        error: err,
+        loading: false,
+      };
+    case LOGOUT_BEGIN:
+      return {
+        ...state,
+        loading: true,
+      };
+    case LOGOUT_SUCCESS:
+      return {
+        ...state,
+        login: data,
+        loading: false,
+      };
+    case LOGOUT_ERR:
+      return {
+        ...state,
+        error: err,
+        loading: false,
+      };
+    default:
+      return state;
+  }
+};
+export default AuthReducer;
